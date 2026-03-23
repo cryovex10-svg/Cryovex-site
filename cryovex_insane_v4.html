@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryoVex | INSANE V4</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Orbitron',sans-serif;background:black;color:white;overflow-x:hidden}
+
+/* background */
+body::before{
+content:"";
+position:fixed;
+width:200%;
+height:200%;
+background:radial-gradient(circle, rgba(0,255,255,0.15), transparent 60%);
+animation:move 15s infinite linear;
+z-index:-2;
+}
+@keyframes move{
+0%{transform:translate(0,0)}
+50%{transform:translate(-10%,-10%)}
+100%{transform:translate(0,0)}
+}
+
+canvas{position:fixed;top:0;left:0;z-index:-1}
+
+.container{max-width:1100px;margin:auto;padding:20px}
+
+h1{text-align:center;font-size:4em;background:linear-gradient(90deg,cyan,blue);-webkit-background-clip:text;color:transparent}
+
+.card{
+background:rgba(20,20,20,0.7);
+border:1px solid rgba(0,255,255,0.3);
+padding:20px;
+border-radius:20px;
+margin-top:20px;
+transition:.3s;
+}
+.card:hover{
+transform:scale(1.05);
+box-shadow:0 0 25px cyan;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:15px;
+background:linear-gradient(90deg,cyan,blue);
+color:black;
+font-weight:bold;
+cursor:pointer;
+}
+
+.counter{color:cyan;font-size:1.5em}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="particles"></canvas>
+
+<div class="container">
+<h1>CryoVex</h1>
+<p style="text-align:center;color:#aaa;">⚡ Discord & Minecraft System Expert</p>
+
+<div class="card">
+<h2>About Me</h2>
+<p>I’m CryoVex, a high-performance Discord and Minecraft Server Manager with advanced automation, optimized systems, and next-level community setups.</p>
+</div>
+
+<div class="card">
+<h2>Projects</h2>
+<div class="grid">
+<div>⚡ Discord Automation Systems</div>
+<div>🎮 Minecraft Server Optimization</div>
+<div>🚀 Community Growth Systems</div>
+<div>🧠 Custom Bots & Tools</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Discord Members</h2>
+<p class="counter" id="discordCount">Loading...</p>
+</div>
+
+<div class="card">
+<h2>Minecraft Status</h2>
+<p class="counter" id="mcStatus">Checking...</p>
+</div>
+
+<div class="card">
+<h2>Join Me</h2>
+<button onclick="window.open('https://discord.gg/5RgASkApM')">Join Discord</button>
+</div>
+
+</div>
+
+<script>
+// particles
+const canvas=document.getElementById('particles');
+const ctx=canvas.getContext('2d');
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+for(let i=0;i<80;i++){
+particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,vx:Math.random()-0.5,vy:Math.random()-0.5});
+}
+
+function animate(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+particles.forEach(p=>{
+p.x+=p.vx;
+p.y+=p.vy;
+ctx.fillStyle='cyan';
+ctx.fillRect(p.x,p.y,2,2);
+});
+requestAnimationFrame(animate);
+}
+animate();
+
+// fake discord count
+setInterval(()=>{
+document.getElementById('discordCount').innerText=Math.floor(Math.random()*1000)+' members';
+},2000);
+
+// minecraft
+fetch('https://api.mcsrvstat.us/2/play.hypixel.net')
+.then(res=>res.json())
+.then(data=>{
+document.getElementById('mcStatus').innerText=data.online?'🟢 Online':'🔴 Offline';
+});
+</script>
+
+</body>
+</html>
